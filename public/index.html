@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>trial service worker test!!!</h1>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum nulla autem
+      quisquam nam omnis hic nostrum rem labore harum, consectetur, odit soluta
+      cumque, laborum mollitia consequatur. Ad nostrum vitae dolorum?
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam odio
+      perspiciatis sint id, provident nulla assumenda! Cum tempore maiores
+      laboriosam? Velit aperiam asperiores nobis officia eaque nostrum quidem,
+      consequatur aliquam.
+    </p>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas hic
+      pariatur nisi sapiente quia eum omnis dignissimos. Culpa reiciendis eum
+      sunt enim odio dolores tempore dignissimos! Sequi nulla vitae nostrum!
+    </p>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque excepturi,
+      modi voluptatibus enim incidunt eveniet nam obcaecati doloremque! Fugit
+      commodi laborum nam accusantium exercitationem error. Eaque iusto
+      necessitatibus quo eius.
+    </p>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-Worker.js").then(() => {
+          const channel = new BroadcastChannel("service-worker-channel");
+          channel.onmessage = (message) => {
+            if (message.data.promptToReload) {
+              const reload = confirm(
+                "updates are available! Would you like to reload?"
+              );
+              if (reload) {
+                channel.postMessage({ skipWaiting: "go ahead" });
+              }
+            }
+          };
+        });
+        navigator.serviceWorker.addEventListener(
+          "controllerchange",
+          function () {
+            window.location.reload();
+          }
+        );
+        navigator.serviceWorker.addEventListener("message", (event) => {
+          console.log(event);
+        });
+        console.log(navigator.serviceWorker.controller);
+      }
+    </script>
+  </body>
+</html>
